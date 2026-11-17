@@ -60,9 +60,13 @@ int getShortestDistance(Graph* graph, int start, int destination);
 void assignTasks(Graph* graph, Robot robots[], int robotCount,Task tasks[], int taskCount);
 
 // Task sequence optimization
-void greedyTaskOptimization(Graph* graph, Task tasks[],
-                            int taskCount, int startLocation);
+void greedyTaskOptimization(Graph* graph, Task tasks[],int taskCount, int startLocation);
 
-void bruteForceTaskOptimization(Graph* graph, Task tasks[],
-                                int taskCount, int startLocation);
+void bruteForceTaskOptimization(Graph* graph, Task tasks[],int taskCount, int startLocation);
+
+// Dynamic obstacle management
+void blockPath(Graph* graph, int source, int destination);
+void unblockPath(Graph* graph, int source, int destination);
+void demonstrateReplanning(Graph* graph, int start, int destination);
+
 #endif

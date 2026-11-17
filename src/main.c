@@ -151,7 +151,8 @@ int main() {
     // =================================================
     // FREE MEMORY
     // =================================================
-
+    // Dynamic obstacle detection and replanning
+    demonstrateReplanning(warehouse, 0, 5);
     freeGraph(warehouse);
 
     printf("\nProgram executed successfully.\n");
