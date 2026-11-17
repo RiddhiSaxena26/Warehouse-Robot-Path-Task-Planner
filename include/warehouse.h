@@ -26,4 +26,19 @@ void BFS(Graph* graph, int start);
 void DFS(Graph* graph, int start);
 // Dijkstra's shortest path algorithm
 void dijkstra(Graph* graph, int start, int destination);
+
+#define MAX_TASKS 100
+
+// Warehouse task structure
+typedef struct Task {
+    int taskID;
+    int pickup;
+    int delivery;
+    int priority;
+} Task;
+
+// Task management functions
+void displayTasks(Task tasks[], int n);
+void mergeSort(Task tasks[], int left, int right);
+
 #endif

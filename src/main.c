@@ -27,6 +27,23 @@ int main() {
 
     // Dijkstra's shortest path
     dijkstra(warehouse, 0, 5);
+    // Warehouse tasks
+    Task tasks[] = {
+        {101, 2, 5, 3},
+        {102, 1, 4, 1},
+        {103, 3, 0, 5},
+        {104, 4, 2, 2},
+        {105, 5, 1, 4}
+    };
+    int taskCount = sizeof(tasks) / sizeof(tasks[0]);
+    printf("\n========== ORIGINAL TASKS ==========\n");
+    displayTasks(tasks, taskCount);
+    // Sort tasks according to priority
+    mergeSort(tasks, 0, taskCount - 1);
+    printf("\n========== TASKS SORTED BY PRIORITY ==========\n");
+    displayTasks(tasks, taskCount);
+
+
 
     freeGraph(warehouse);
 
