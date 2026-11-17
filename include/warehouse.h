@@ -24,4 +24,6 @@ void freeGraph(Graph* graph);
 // Graph traversal algorithms
 void BFS(Graph* graph, int start);
 void DFS(Graph* graph, int start);
+// Dijkstra's shortest path algorithm
+void dijkstra(Graph* graph, int start, int destination);
 #endif

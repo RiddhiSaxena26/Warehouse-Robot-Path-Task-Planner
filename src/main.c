@@ -9,7 +9,7 @@ int main() {
         return 1;
     }
 
-    // Warehouse paths
+    // Create warehouse paths
     addEdge(warehouse, 0, 1, 4);
     addEdge(warehouse, 0, 2, 2);
     addEdge(warehouse, 1, 3, 5);
@@ -18,14 +18,16 @@ int main() {
     addEdge(warehouse, 3, 5, 2);
     addEdge(warehouse, 4, 5, 4);
 
-    // Display warehouse graph
+    // Display warehouse
     displayGraph(warehouse);
 
-    // Perform BFS and DFS
+    // BFS and DFS
     BFS(warehouse, 0);
     DFS(warehouse, 0);
 
-    // Free memory
+    // Dijkstra's shortest path
+    dijkstra(warehouse, 0, 5);
+
     freeGraph(warehouse);
 
     return 0;
