@@ -21,5 +21,7 @@ Graph* createGraph(int vertices);
 void addEdge(Graph* graph, int source, int destination, int weight);
 void displayGraph(Graph* graph);
 void freeGraph(Graph* graph);
-
+// Graph traversal algorithms
+void BFS(Graph* graph, int start);
+void DFS(Graph* graph, int start);
 #endif
