@@ -1,0 +1,22 @@
+# Compiled C programs
+*.exe
+*.out
+*.o
+*.obj
+
+# Build folders
+build/
+bin/
+Debug/
+Release/
+
+# VS Code temporary files
+.vscode/
+
+# Temporary files
+*.tmp
+*.log
+
+# Operating system files
+.DS_Store
+Thumbs.db
