@@ -107,4 +107,67 @@ void dijkstra(Graph* graph, int start, int destination) {
     }
 
     printf("\n");
+
+    // Return shortest distance between two locations
+int getShortestDistance(Graph* graph, int start, int destination) {
+
+    if (graph == NULL ||
+        start < 0 || start >= graph->vertices ||
+        destination < 0 || destination >= graph->vertices) {
+        return -1;
+    }
+
+    int distance[MAX_LOCATIONS];
+    int visited[MAX_LOCATIONS] = {0};
+
+    for (int i = 0; i < graph->vertices; i++) {
+        distance[i] = INT_MAX;
+    }
+
+    distance[start] = 0;
+
+    for (int i = 0; i < graph->vertices; i++) {
+
+        int minDistance = INT_MAX;
+        int current = -1;
+
+        // Find closest unvisited location
+        for (int j = 0; j < graph->vertices; j++) {
+
+            if (!visited[j] && distance[j] < minDistance) {
+                minDistance = distance[j];
+                current = j;
+            }
+        }
+
+        if (current == -1) {
+            break;
+        }
+
+        if (current == destination) {
+            return distance[current];
+        }
+
+        visited[current] = 1;
+
+        Node* temp = graph->adjacencyList[current];
+
+        while (temp != NULL) {
+
+            int neighbour = temp->vertex;
+            int weight = temp->weight;
+
+            if (!visited[neighbour] &&
+                distance[current] <= INT_MAX - weight &&
+                distance[current] + weight < distance[neighbour]) {
+
+                distance[neighbour] = distance[current] + weight;
+            }
+
+            temp = temp->next;
+        }
+    }
+
+    // Destination is unreachable
+    return -1;
 }

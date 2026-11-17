@@ -44,7 +44,22 @@ int main() {
     displayTasks(tasks, taskCount);
 
 
-
+    // Initialize warehouse robots
+    Robot robots[] = {
+        {1, 0, 0, 0},
+        {2, 3, 0, 0},
+        {3, 5, 0, 0}
+    };
+    int robotCount = sizeof(robots) / sizeof(robots[0]);
+    // Display initial robot position
+    printf("\n========== INITIAL ROBOT POSITIONS ==========\n");
+    displayRobots(robots, robotCount);
+    // Assign tasks using greedy algorithm
+    assignTasks(warehouse, robots, robotCount, tasks, taskCount);
+    // Display updated robot information
+    printf("\n========== FINAL ROBOT STATUS ==========\n");
+    displayRobots(robots, robotCount);
+    
     freeGraph(warehouse);
 
     return 0;

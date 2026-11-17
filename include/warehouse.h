@@ -40,5 +40,22 @@ typedef struct Task {
 // Task management functions
 void displayTasks(Task tasks[], int n);
 void mergeSort(Task tasks[], int left, int right);
+#define MAX_ROBOTS 10
 
+// Robot structure
+typedef struct Robot {
+    int robotID;
+    int location;
+    int tasksCompleted;
+    int totalDistance;
+} Robot;
+
+// Robot management
+void displayRobots(Robot robots[], int count);
+
+// Shortest distance calculation
+int getShortestDistance(Graph* graph, int start, int destination);
+
+// Greedy task assignment
+void assignTasks(Graph* graph, Robot robots[], int robotCount,Task tasks[], int taskCount);
 #endif
