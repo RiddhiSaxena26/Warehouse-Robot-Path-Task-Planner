@@ -4,6 +4,10 @@
 
 #define INF INT_MAX
 
+// =====================================================
+// DIJKSTRA'S SHORTEST PATH ALGORITHM
+// =====================================================
+
 void dijkstra(Graph* graph, int start, int destination) {
 
     if (graph == NULL ||
@@ -18,7 +22,6 @@ void dijkstra(Graph* graph, int start, int destination) {
     int visited[MAX_LOCATIONS] = {0};
     int parent[MAX_LOCATIONS];
 
-    // Initialize distances
     for (int i = 0; i < graph->vertices; i++) {
         distance[i] = INF;
         parent[i] = -1;
@@ -26,7 +29,6 @@ void dijkstra(Graph* graph, int start, int destination) {
 
     distance[start] = 0;
 
-    // Find shortest distances
     for (int i = 0; i < graph->vertices; i++) {
 
         int minDistance = INF;
@@ -60,6 +62,7 @@ void dijkstra(Graph* graph, int start, int destination) {
             int weight = temp->weight;
 
             if (!visited[neighbour] &&
+                weight >= 0 &&
                 distance[current] <= INT_MAX - weight &&
                 distance[current] + weight < distance[neighbour]) {
 
@@ -71,7 +74,6 @@ void dijkstra(Graph* graph, int start, int destination) {
         }
     }
 
-    // Display result
     if (distance[destination] == INF) {
 
         printf("\nNo path exists between locations %d and %d.\n",
@@ -85,7 +87,6 @@ void dijkstra(Graph* graph, int start, int destination) {
     printf("Destination: %d\n", destination);
     printf("Minimum Distance: %d metres\n", distance[destination]);
 
-    // Reconstruct shortest path
     int path[MAX_LOCATIONS];
     int count = 0;
     int current = destination;
@@ -107,13 +108,19 @@ void dijkstra(Graph* graph, int start, int destination) {
     }
 
     printf("\n");
+}
 
-    // Return shortest distance between two locations
+
+// =====================================================
+// RETURN SHORTEST DISTANCE BETWEEN TWO LOCATIONS
+// =====================================================
+
 int getShortestDistance(Graph* graph, int start, int destination) {
 
     if (graph == NULL ||
         start < 0 || start >= graph->vertices ||
         destination < 0 || destination >= graph->vertices) {
+
         return -1;
     }
 
@@ -121,17 +128,17 @@ int getShortestDistance(Graph* graph, int start, int destination) {
     int visited[MAX_LOCATIONS] = {0};
 
     for (int i = 0; i < graph->vertices; i++) {
-        distance[i] = INT_MAX;
+        distance[i] = INF;
     }
 
     distance[start] = 0;
 
     for (int i = 0; i < graph->vertices; i++) {
 
-        int minDistance = INT_MAX;
+        int minDistance = INF;
         int current = -1;
 
-        // Find closest unvisited location
+        // Select nearest unvisited location
         for (int j = 0; j < graph->vertices; j++) {
 
             if (!visited[j] && distance[j] < minDistance) {
@@ -158,6 +165,7 @@ int getShortestDistance(Graph* graph, int start, int destination) {
             int weight = temp->weight;
 
             if (!visited[neighbour] &&
+                weight >= 0 &&
                 distance[current] <= INT_MAX - weight &&
                 distance[current] + weight < distance[neighbour]) {
 
@@ -168,6 +176,5 @@ int getShortestDistance(Graph* graph, int start, int destination) {
         }
     }
 
-    // Destination is unreachable
     return -1;
 }

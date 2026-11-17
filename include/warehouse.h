@@ -58,4 +58,11 @@ int getShortestDistance(Graph* graph, int start, int destination);
 
 // Greedy task assignment
 void assignTasks(Graph* graph, Robot robots[], int robotCount,Task tasks[], int taskCount);
+
+// Task sequence optimization
+void greedyTaskOptimization(Graph* graph, Task tasks[],
+                            int taskCount, int startLocation);
+
+void bruteForceTaskOptimization(Graph* graph, Task tasks[],
+                                int taskCount, int startLocation);
 #endif
