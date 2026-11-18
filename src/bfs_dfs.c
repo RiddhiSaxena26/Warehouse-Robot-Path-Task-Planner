@@ -1,11 +1,14 @@
 #include <stdio.h>
 #include "warehouse.h"
 
-// Breadth-First Search
+// ==========================================
+// BREADTH-FIRST SEARCH (BFS)
+// ==========================================
+
 void BFS(Graph* graph, int start) {
 
     if (graph == NULL || start < 0 || start >= graph->vertices) {
-        printf("Invalid starting location!\n");
+        printf("\nInvalid starting location!\n");
         return;
     }
 
@@ -14,17 +17,28 @@ void BFS(Graph* graph, int start) {
 
     int front = 0;
     int rear = 0;
+    int locationsVisited = 0;
 
     visited[start] = 1;
     queue[rear++] = start;
 
-    printf("\nBFS Traversal: ");
+    printf("\n========================================\n");
+    printf("       WAREHOUSE GRAPH TRAVERSAL\n");
+    printf("========================================\n");
+
+    printf("Algorithm Used: Breadth-First Search (BFS)\n");
+    printf("Technique: Graph Traversal\n");
+    printf("Data Structure: Queue (FIFO)\n\n");
+
+    printf("Starting Location: %d\n", start);
+    printf("Traversal Order: ");
 
     while (front < rear) {
 
         int current = queue[front++];
+        locationsVisited++;
 
-        printf("%d ", current);
+        printf("%d", current);
 
         Node* temp = graph->adjacencyList[current];
 
@@ -33,25 +47,42 @@ void BFS(Graph* graph, int start) {
             int neighbour = temp->vertex;
 
             if (!visited[neighbour]) {
-
                 visited[neighbour] = 1;
                 queue[rear++] = neighbour;
             }
 
             temp = temp->next;
         }
+
+        if (front < rear) {
+            printf(" -> ");
+        }
     }
 
-    printf("\n");
+    printf("\nLocations Visited: %d\n", locationsVisited);
+
+    printf("\nTime Complexity: O(V + E)\n");
+    printf("Auxiliary Space Complexity: O(V)\n");
+
+    printf("========================================\n");
 }
 
 
-// Recursive DFS helper
-static void DFSRecursive(Graph* graph, int current, int visited[]) {
+// ==========================================
+// DEPTH-FIRST SEARCH (DFS)
+// ==========================================
+
+static void DFSRecursive(
+    Graph* graph,
+    int current,
+    int visited[],
+    int* locationsVisited
+) {
 
     visited[current] = 1;
+    (*locationsVisited)++;
 
-    printf("%d ", current);
+    printf("%d", current);
 
     Node* temp = graph->adjacencyList[current];
 
@@ -60,7 +91,14 @@ static void DFSRecursive(Graph* graph, int current, int visited[]) {
         int neighbour = temp->vertex;
 
         if (!visited[neighbour]) {
-            DFSRecursive(graph, neighbour, visited);
+            printf(" -> ");
+
+            DFSRecursive(
+                graph,
+                neighbour,
+                visited,
+                locationsVisited
+            );
         }
 
         temp = temp->next;
@@ -68,19 +106,38 @@ static void DFSRecursive(Graph* graph, int current, int visited[]) {
 }
 
 
-// Depth-First Search
 void DFS(Graph* graph, int start) {
 
     if (graph == NULL || start < 0 || start >= graph->vertices) {
-        printf("Invalid starting location!\n");
+        printf("\nInvalid starting location!\n");
         return;
     }
 
     int visited[MAX_LOCATIONS] = {0};
+    int locationsVisited = 0;
 
-    printf("\nDFS Traversal: ");
+    printf("\n========================================\n");
+    printf("       WAREHOUSE GRAPH TRAVERSAL\n");
+    printf("========================================\n");
 
-    DFSRecursive(graph, start, visited);
+    printf("Algorithm Used: Depth-First Search (DFS)\n");
+    printf("Technique: Graph Traversal\n");
+    printf("Data Structure: Recursion (Call Stack)\n\n");
 
-    printf("\n");
+    printf("Starting Location: %d\n", start);
+    printf("Traversal Order: ");
+
+    DFSRecursive(
+        graph,
+        start,
+        visited,
+        &locationsVisited
+    );
+
+    printf("\nLocations Visited: %d\n", locationsVisited);
+
+    printf("\nTime Complexity: O(V + E)\n");
+    printf("Auxiliary Space Complexity: O(V)\n");
+
+    printf("========================================\n");
 }
