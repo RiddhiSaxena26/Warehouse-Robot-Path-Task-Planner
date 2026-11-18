@@ -1,13 +1,21 @@
 #include <stdio.h>
 #include "warehouse.h"
 
-// Display all warehouse tasks
+// ==========================================
+// DISPLAY WAREHOUSE TASKS
+// ==========================================
+
 void displayTasks(Task tasks[], int n) {
+
+    if (tasks == NULL || n <= 0) {
+        printf("\nNo tasks available.\n");
+        return;
+    }
 
     printf("\n%-10s %-12s %-12s %-10s\n",
            "Task ID", "Pickup", "Delivery", "Priority");
 
-    printf("-----------------------------------------------\n");
+    printf("------------------------------------------------\n");
 
     for (int i = 0; i < n; i++) {
 
@@ -19,7 +27,11 @@ void displayTasks(Task tasks[], int n) {
     }
 }
 
-// Merge two sorted parts
+
+// ==========================================
+// MERGE TWO SORTED ARRAYS
+// ==========================================
+
 static void merge(Task tasks[], int left, int mid, int right) {
 
     Task temp[MAX_TASKS];
@@ -38,26 +50,27 @@ static void merge(Task tasks[], int left, int mid, int right) {
         }
     }
 
-    // Copy remaining left-side tasks
     while (i <= mid) {
         temp[k++] = tasks[i++];
     }
 
-    // Copy remaining right-side tasks
     while (j <= right) {
         temp[k++] = tasks[j++];
     }
 
-    // Copy sorted tasks back
     for (int x = 0; x < k; x++) {
         tasks[left + x] = temp[x];
     }
 }
 
-// Merge Sort algorithm
+
+// ==========================================
+// MERGE SORT ALGORITHM
+// ==========================================
+
 void mergeSort(Task tasks[], int left, int right) {
 
-    if (left >= right) {
+    if (tasks == NULL || left >= right) {
         return;
     }
 
@@ -67,4 +80,41 @@ void mergeSort(Task tasks[], int left, int right) {
     mergeSort(tasks, mid + 1, right);
 
     merge(tasks, left, mid, right);
+}
+
+
+// ==========================================
+// DISPLAY MERGE SORT DETAILS
+// ==========================================
+
+void demonstrateMergeSort(Task tasks[], int taskCount) {
+
+    if (tasks == NULL || taskCount <= 0 ||
+        taskCount > MAX_TASKS) {
+
+        printf("\nInvalid task list.\n");
+        return;
+    }
+
+    printf("\n========================================\n");
+    printf("       TASK PRIORITY MANAGEMENT\n");
+    printf("========================================\n");
+
+    printf("Algorithm Used: Merge Sort\n");
+    printf("Technique: Divide and Conquer\n");
+    printf("Sorting Order: Highest Priority First\n\n");
+
+    printf("Tasks Before Sorting:\n");
+    displayTasks(tasks, taskCount);
+
+    // Perform Merge Sort
+    mergeSort(tasks, 0, taskCount - 1);
+
+    printf("\nTasks After Sorting:\n");
+    displayTasks(tasks, taskCount);
+
+    printf("\nTime Complexity: O(n log n)\n");
+    printf("Auxiliary Space Complexity: O(n)\n");
+
+    printf("========================================\n");
 }

@@ -1,13 +1,22 @@
+
+#include <stdint.h>
+#include <inttypes.h>
 #include <stdio.h>
 #include <limits.h>
 #include "warehouse.h"
 
-// Display robot information
+// ==========================================
+// DISPLAY ROBOT INFORMATION
+// ==========================================
+
 void displayRobots(Robot robots[], int count) {
 
-    printf("\n========== ROBOT STATUS ==========\n");
+    if (robots == NULL || count <= 0) {
+        printf("\nNo robots available.\n");
+        return;
+    }
 
-    printf("%-10s %-12s %-18s %-15s\n",
+    printf("\n%-10s %-12s %-18s %-15s\n",
            "Robot ID", "Location", "Tasks Completed", "Distance");
 
     printf("----------------------------------------------------------\n");
@@ -23,19 +32,46 @@ void displayRobots(Robot robots[], int count) {
 }
 
 
-// Greedy task assignment algorithm
-void assignTasks(Graph* graph, Robot robots[], int robotCount,
-                 Task tasks[], int taskCount) {
+// ==========================================
+// GREEDY ROBOT TASK ASSIGNMENT
+// ==========================================
+
+void assignTasks(
+    Graph* graph,
+    Robot robots[],
+    int robotCount,
+    Task tasks[],
+    int taskCount
+) {
 
     if (graph == NULL || robots == NULL || tasks == NULL ||
         robotCount <= 0 || robotCount > MAX_ROBOTS ||
-        taskCount < 0 || taskCount > MAX_TASKS) {
+        taskCount <= 0 || taskCount > MAX_TASKS) {
 
-        printf("Invalid task assignment input!\n");
+        printf("\nInvalid task assignment input!\n");
         return;
     }
 
-    printf("\n========== GREEDY TASK ASSIGNMENT ==========\n");
+    int assignedCount = 0;
+    int skippedCount = 0;
+    int64_t totalWarehouseDistance = 0;
+
+    printf("\n==================================================\n");
+    printf("           ROBOT TASK ASSIGNMENT\n");
+    printf("==================================================\n");
+
+    printf("Algorithm Used: Greedy Task Assignment\n");
+    printf("Technique: Greedy Method\n");
+    printf("Supporting Algorithm: Dijkstra's Shortest Path\n");
+    printf("Selection Rule: Nearest Robot to Pickup Location\n");
+    printf("Task Order: Highest Priority First\n");
+
+    printf("\nTotal Robots: %d\n", robotCount);
+    printf("Total Tasks: %d\n", taskCount);
+
+    printf("\n--------------------------------------------------\n");
+    printf("                TASK ALLOCATION\n");
+    printf("--------------------------------------------------\n");
 
     for (int i = 0; i < taskCount; i++) {
 
@@ -45,26 +81,30 @@ void assignTasks(Graph* graph, Robot robots[], int robotCount,
         int pickup = tasks[i].pickup;
         int delivery = tasks[i].delivery;
 
-        // Validate task locations
         if (pickup < 0 || pickup >= graph->vertices ||
             delivery < 0 || delivery >= graph->vertices) {
 
             printf("\nTask %d skipped: Invalid location.\n",
                    tasks[i].taskID);
+
+            skippedCount++;
             continue;
         }
 
-        // Calculate pickup-to-delivery distance
-        int deliveryDistance =
-            getShortestDistance(graph, pickup, delivery);
+        int deliveryDistance = getShortestDistance(
+            graph, pickup, delivery
+        );
 
         if (deliveryDistance == -1) {
-            printf("\nTask %d skipped: Delivery is unreachable.\n",
+
+            printf("\nTask %d skipped: Delivery unreachable.\n",
                    tasks[i].taskID);
+
+            skippedCount++;
             continue;
         }
 
-        // Find the closest robot
+        // Find the robot nearest to the pickup location
         for (int j = 0; j < robotCount; j++) {
 
             int distance = getShortestDistance(
@@ -73,7 +113,8 @@ void assignTasks(Graph* graph, Robot robots[], int robotCount,
                 pickup
             );
 
-            if (distance != -1 && distance < minimumDistance) {
+            if (distance != -1 &&
+                distance < minimumDistance) {
 
                 minimumDistance = distance;
                 bestRobot = j;
@@ -82,40 +123,91 @@ void assignTasks(Graph* graph, Robot robots[], int robotCount,
 
         if (bestRobot == -1) {
 
-            printf("\nTask %d could not be assigned.\n",
+            printf("\nTask %d skipped: No robot can reach pickup.\n",
                    tasks[i].taskID);
+
+            skippedCount++;
             continue;
         }
 
-        // Calculate total travel distance
+        // Prevent integer overflow
+        if (minimumDistance > INT_MAX - deliveryDistance) {
+
+            printf("\nTask %d skipped: Distance overflow.\n",
+                   tasks[i].taskID);
+
+            skippedCount++;
+            continue;
+        }
+
         int travelDistance =
             minimumDistance + deliveryDistance;
 
-        // Update robot information
+        if (robots[bestRobot].totalDistance >
+            INT_MAX - travelDistance) {
+
+            printf("\nTask %d skipped: Robot distance limit reached.\n",
+                   tasks[i].taskID);
+
+            skippedCount++;
+            continue;
+        }
+
+        int previousLocation = robots[bestRobot].location;
+
+        // Update selected robot
         robots[bestRobot].totalDistance += travelDistance;
         robots[bestRobot].tasksCompleted++;
-
         robots[bestRobot].location = delivery;
 
-        // Display assignment
-        printf("\nTask %d assigned to Robot %d\n",
-               tasks[i].taskID,
+        totalWarehouseDistance += travelDistance;
+        assignedCount++;
+
+        printf("\nTask ID: %d\n", tasks[i].taskID);
+        printf("Priority: %d\n", tasks[i].priority);
+        printf("Assigned Robot: %d\n",
                robots[bestRobot].robotID);
 
-        printf("Priority: %d\n", tasks[i].priority);
+        printf("Robot Starting Location: %d\n",
+               previousLocation);
 
-        printf("Pickup: %d | Delivery: %d\n",
-               pickup, delivery);
+        printf("Pickup Location: %d\n", pickup);
+        printf("Delivery Location: %d\n", delivery);
 
-        printf("Distance to Pickup: %d m\n",
+        printf("Distance to Pickup: %d metres\n",
                minimumDistance);
 
-        printf("Delivery Distance: %d m\n",
+        printf("Pickup to Delivery: %d metres\n",
                deliveryDistance);
 
-        printf("Total Task Distance: %d m\n",
+        printf("Total Task Distance: %d metres\n",
                travelDistance);
+
+        printf("----------------------------------------\n");
     }
 
-    printf("\nAll possible tasks have been assigned.\n");
+    // ==========================================
+    // ASSIGNMENT SUMMARY
+    // ==========================================
+
+    printf("\n==================================================\n");
+    printf("             ASSIGNMENT SUMMARY\n");
+    printf("==================================================\n");
+
+    printf("Total Tasks: %d\n", taskCount);
+    printf("Successfully Assigned: %d\n", assignedCount);
+    printf("Unassigned Tasks: %d\n", skippedCount);
+
+    printf("Total Planned Warehouse Distance: %I64d metres\n",totalWarehouseDistance);
+
+    printf("\nFinal Robot Status:\n");
+    displayRobots(robots, robotCount);
+
+    printf("\nTime Complexity: O(T * (R + 1) * (V^2 + E))\n");
+    printf("Auxiliary Space Complexity: O(V)\n");
+
+    printf("\nNote: Greedy assignment does not guarantee\n");
+    printf("the globally minimum travel distance.\n");
+
+    printf("==================================================\n");
 }

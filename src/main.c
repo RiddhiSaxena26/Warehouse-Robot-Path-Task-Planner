@@ -155,10 +155,7 @@ int main() {
                 break;
 
             case 6:
-                mergeSort(tasks, 0, INITIAL_TASKS - 1);
-
-                printf("\nTasks sorted by priority.\n");
-                displayTasks(tasks, INITIAL_TASKS);
+                demonstrateMergeSort(tasks, INITIAL_TASKS);
                 break;
 
             case 7:

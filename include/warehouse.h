@@ -93,4 +93,6 @@ void compareShortestPathAlgorithms(
     int destination
 );
 
+void demonstrateMergeSort(Task tasks[], int taskCount);
+
 #endif
