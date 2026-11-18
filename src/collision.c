@@ -93,48 +93,69 @@ void scheduleRobots(
     int robot2Path[],
     int length2
 ) {
-
     if (robot1Path == NULL || robot2Path == NULL ||
         length1 <= 0 || length2 <= 0 ||
-        length1 > MAX_TIME || length2 > MAX_TIME) {
-
+        length1 > 100 || length2 > 100) {
         printf("\nInvalid robot paths.\n");
         return;
     }
 
-    printf("\n========== ROBOT SCHEDULING ==========\n");
+    printf("\n========================================\n");
+    printf("       ROBOT MOVEMENT SCHEDULING\n");
+    printf("========================================\n");
 
-    printf("\nRobot 1 follows its original route.\n");
-    printf("Robot 2 waits until Robot 1 finishes.\n");
+    printf("Method: Sequential Scheduling\n");
+    printf("Technique: Time-Step Scheduling\n\n");
 
-    int totalTime = (length1 - 1) + (length2 - 1);
+    // Check whether Robot 2's waiting location
+    // appears anywhere on Robot 1's route.
+    for (int i = 0; i < length1; i++) {
+        if (robot1Path[i] == robot2Path[0]) {
+            printf("Unsafe schedule detected!\n");
+            printf("Robot 2 is waiting on Robot 1's route.\n");
+            printf("A different route or waiting location is required.\n");
+            return;
+        }
+    }
 
-    printf("\n%-10s %-15s %-15s\n",
+    // Check whether Robot 1's final location
+    // appears anywhere on Robot 2's route.
+    for (int i = 0; i < length2; i++) {
+        if (robot2Path[i] == robot1Path[length1 - 1]) {
+            printf("Unsafe schedule detected!\n");
+            printf("Robot 1's final location blocks Robot 2's route.\n");
+            printf("A different route or waiting location is required.\n");
+            return;
+        }
+    }
+
+    int totalTime = length1 + length2 - 2;
+
+    printf("Robot 1 moves first.\n");
+    printf("Robot 2 waits until Robot 1 finishes.\n\n");
+
+    printf("%-10s %-15s %-15s\n",
            "Time", "Robot 1", "Robot 2");
-
-    printf("------------------------------------------\n");
 
     for (int t = 0; t <= totalTime; t++) {
 
-        int pos1 = getPosition(robot1Path, length1, t);
+        int pos1 = t < length1
+                   ? robot1Path[t]
+                   : robot1Path[length1 - 1];
 
         int robot2Time = t - (length1 - 1);
 
-        int pos2;
-
-        if (robot2Time < 0) {
-            pos2 = robot2Path[0];
-        } else {
-            pos2 = getPosition(
-                robot2Path,
-                length2,
-                robot2Time
-            );
-        }
+        int pos2 = robot2Time < 0
+                   ? robot2Path[0]
+                   : robot2Time < length2
+                     ? robot2Path[robot2Time]
+                     : robot2Path[length2 - 1];
 
         printf("%-10d %-15d %-15d\n",
                t, pos1, pos2);
     }
 
-    printf("\nScheduling completed.\n");
+    printf("\nSchedule completed without vertex or edge conflicts.\n");
+    printf("Time Complexity: O(L1 + L2)\n");
+    printf("Auxiliary Space Complexity: O(1)\n");
 }
