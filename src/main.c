@@ -96,9 +96,7 @@ int main() {
 
     // Tasks for optimization comparison
     Task optimizationTasks[] = {
-        {101, 2, 5, 3},
-        {102, 1, 4, 1},
-        {103, 3, 0, 5}
+        {201, 0, 1, 3},{202, 0, 2, 2},{203, 1, 4, 1}
     };
 
     int optimizationCount =
@@ -186,20 +184,13 @@ int main() {
                 break;
 
             case 9:
-                greedyTaskOptimization(
+                compareTaskOptimization(
                     warehouse,
                     optimizationTasks,
                     optimizationCount,
                     0
                 );
-
-                bruteForceTaskOptimization(
-                    warehouse,
-                    optimizationTasks,
-                    optimizationCount,
-                    0
-                );
-                break;
+            break;
 
             case 10:
                 source = readInteger("Enter first location: ");

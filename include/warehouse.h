@@ -95,4 +95,14 @@ void compareShortestPathAlgorithms(
 
 void demonstrateMergeSort(Task tasks[], int taskCount);
 
+
+// Compare task optimization algorithms
+void compareTaskOptimization(
+    Graph* graph,
+    Task tasks[],
+    int taskCount,
+    int startLocation
+);
+
+
 #endif

@@ -250,3 +250,84 @@ void bruteForceTaskOptimization(
 
     printf("\nMinimum Total Distance: %d metres\n", bestDistance);
 }
+
+// ==========================================
+// COMPARE GREEDY AND BRUTE FORCE
+// ==========================================
+
+void compareTaskOptimization(
+    Graph* graph,
+    Task tasks[],
+    int taskCount,
+    int startLocation
+) {
+
+    if (graph == NULL || tasks == NULL ||
+        taskCount <= 0 || taskCount > MAX_OPT_TASKS ||
+        startLocation < 0 ||
+        startLocation >= graph->vertices) {
+
+        printf("\nInvalid comparison input.\n");
+        return;
+    }
+
+    printf("\n==================================================\n");
+    printf("          TASK OPTIMIZATION COMPARISON\n");
+    printf("==================================================\n");
+
+    printf("Starting Location: %d\n", startLocation);
+    printf("Number of Tasks: %d\n", taskCount);
+
+    printf("\nTasks to Complete:\n");
+    displayTasks(tasks, taskCount);
+
+    printf("\n--------------------------------------------------\n");
+    printf("ALGORITHM 1: GREEDY TASK OPTIMIZATION\n");
+    printf("--------------------------------------------------\n");
+
+    printf("Technique: Greedy Method\n");
+    printf("Selection Rule: Nearest Pickup Location\n");
+
+    greedyTaskOptimization(
+        graph,
+        tasks,
+        taskCount,
+        startLocation
+    );
+
+    printf("\n--------------------------------------------------\n");
+    printf("ALGORITHM 2: BRUTE-FORCE OPTIMIZATION\n");
+    printf("--------------------------------------------------\n");
+
+    printf("Technique: Exhaustive Search with Backtracking\n");
+    printf("Selection Rule: Minimum Total Travel Distance\n");
+
+    bruteForceTaskOptimization(
+        graph,
+        tasks,
+        taskCount,
+        startLocation
+    );
+
+    printf("\n==================================================\n");
+    printf("              COMPLEXITY COMPARISON\n");
+    printf("==================================================\n");
+
+    printf("\nGreedy Algorithm:\n");
+    printf("Time: O(T^2 * (V^2 + E))\n");
+    printf("Auxiliary Space: O(T + V)\n");
+
+    printf("\nBrute-Force Algorithm:\n");
+    printf("Worst-Case Time: O(T! * (V^2 + E))\n");
+    printf("Auxiliary Space: O(T + V)\n");
+
+    printf("\nT = Tasks, V = Locations, E = Edges\n");
+
+    printf("\nGreedy is faster for larger task sets,\n");
+    printf("but does not guarantee an optimal result.\n");
+
+    printf("\nBrute Force finds an optimal task order,\n");
+    printf("but becomes expensive as tasks increase.\n");
+
+    printf("==================================================\n");
+}
