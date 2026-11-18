@@ -153,6 +153,27 @@ int main() {
     // =================================================
     // Dynamic obstacle detection and replanning
     demonstrateReplanning(warehouse, 0, 5);
+    
+    // ==========================================
+    // MULTI-ROBOT COLLISION DETECTION
+    // ==========================================
+    int robot1Path[] = {0, 2, 3, 5};
+    int robot2Path[] = {5, 3, 2, 0};
+    int length1 = sizeof(robot1Path) / sizeof(robot1Path[0]);
+    int length2 = sizeof(robot2Path) / sizeof(robot2Path[0]);
+    detectCollisions(
+        robot1Path,
+        length1,
+        robot2Path,
+        length2
+    );
+    scheduleRobots(
+        robot1Path,
+        length1,
+        robot2Path,
+        length2
+    );
+    
     freeGraph(warehouse);
 
     printf("\nProgram executed successfully.\n");

@@ -68,5 +68,19 @@ void bruteForceTaskOptimization(Graph* graph, Task tasks[],int taskCount, int st
 void blockPath(Graph* graph, int source, int destination);
 void unblockPath(Graph* graph, int source, int destination);
 void demonstrateReplanning(Graph* graph, int start, int destination);
+// Multi-robot collision detection
+void detectCollisions(
+    int robot1Path[],
+    int length1,
+    int robot2Path[],
+    int length2
+);
+
+void scheduleRobots(
+    int robot1Path[],
+    int length1,
+    int robot2Path[],
+    int length2
+);
 
 #endif
