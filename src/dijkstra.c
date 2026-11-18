@@ -81,7 +81,11 @@ void dijkstra(Graph* graph, int start, int destination) {
         return;
     }
 
-    printf("\n========== SHORTEST PATH ==========\n");
+    printf("\n========================================\n");
+    printf("        SHORTEST PATH PLANNING\n");
+    printf("========================================\n");
+    printf("Algorithm Used: Dijkstra's Algorithm\n");
+    printf("Technique: Greedy Algorithm\n\n");
 
     printf("Starting Location: %d\n", start);
     printf("Destination: %d\n", destination);
@@ -107,7 +111,9 @@ void dijkstra(Graph* graph, int start, int destination) {
         }
     }
 
-    printf("\n");
+    printf("\nTime Complexity: O(V^2 + E)\n");
+    printf("Auxiliary Space Complexity: O(V)\n");
+    printf("========================================\n");
 }
 
 
