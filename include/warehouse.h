@@ -83,4 +83,14 @@ void scheduleRobots(
     int length2
 );
 
+// Bellman-Ford shortest path algorithm
+void bellmanFord(Graph* graph, int start, int destination);
+
+// Compare Dijkstra and Bellman-Ford
+void compareShortestPathAlgorithms(
+    Graph* graph,
+    int start,
+    int destination
+);
+
 #endif

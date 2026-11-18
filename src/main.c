@@ -174,6 +174,25 @@ int main() {
         length2
     );
     
+    
+
+
+
+    // ==========================================
+    // BELLMAN-FORD ALGORITHM
+    // ==========================================
+    bellmanFord(warehouse, 0, 5);
+
+    // =========================================
+    // SHORTEST PATH ALGORITHM COMPARISON
+    // ==========================================
+
+    compareShortestPathAlgorithms(
+        warehouse,
+        0,
+        5
+    );
+    
     freeGraph(warehouse);
 
     printf("\nProgram executed successfully.\n");
